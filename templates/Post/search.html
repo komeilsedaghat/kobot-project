@@ -1,0 +1,21 @@
+{% extends 'Post/base.html' %}
+
+{% block content %}
+
+{% for post in object_list %}
+<section class="new-posts">
+    <div class="col-12">
+        <div class="col-8">
+            <div class="card-header head-change">
+                <h2>{{post.user}}</h2>
+            </div>
+            <div class="card-body body-change">
+                <p>{{post.text|linebreaks}}</p>
+                <small>{{post.created}}</small>
+            </div>
+        </div>
+    </div>
+  </section>
+{% endfor %}
+
+{% endblock %}

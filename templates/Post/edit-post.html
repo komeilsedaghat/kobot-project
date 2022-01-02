@@ -1,0 +1,16 @@
+{% extends 'Post/base.html' %}
+
+{% block content %}
+    <form action="" method="POST" class="adding-post-form">
+        {% csrf_token %}
+        <div class="card">
+            <div class="card-header bg-dark">
+                Add Post
+            </div>
+            <div class="card-body bg-dark">
+                {{form.text}}
+            </div>
+            <input type="submit" value="Send" class="btn btn-info">
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,17 @@
+body {
+    background: rgb(36, 36, 36);
+}
+
+.container {
+    max-width: 50%;
+}
+
+.col-md-3 {
+    flex: 0 0 auto;
+    width: 4%;
+}
+
+.col-md-5 {
+    flex: 0 0 auto;
+    width: 96.667%;
+}

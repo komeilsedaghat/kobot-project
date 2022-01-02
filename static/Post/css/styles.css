@@ -1,0 +1,86 @@
+body {
+    background-color: #cccbcb;
+}
+
+.head-change {
+    background-color: #5da7f7;
+    text-align: center;
+    font-family: serif;
+    margin-top: 8%;
+    border: 0px solid;
+    border-radius: 58px 58px 0px 0px !important;
+    margin-left: 29px;
+    font-family: 'Times New Roman', Times, serif;
+
+}
+
+.body-change {
+    background-color: #ffb300;
+    margin-left: 29px;
+    margin-bottom: 5%;
+    border: 0px solid;
+    box-shadow: 9px 10px 12px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.new-posts {
+    padding-top: 1%;
+    padding-left: 20%;
+}
+
+
+.login-want {
+    margin-left: 41%;
+    padding: 2%;
+    margin-top: 2%;
+    border: 0px solid;
+    border-radius: 32px;
+}
+
+
+.block-item {
+    display: inline-block;
+    padding-right: 60%;
+}
+
+.padding-block {
+    padding-right: 59%;
+}
+
+.flo {
+    float: left;
+    width: 49%;
+    padding-left: 4px;
+}
+
+.special-place {
+    margin-top: 79px;
+    width: 24%;
+    border: 1px solid #a8a0a0;
+    background-color: #ffb300;
+    border-radius: 48px 5px;
+    margin-left: 20% !important;
+    padding: 25px;
+    box-shadow: 20px 24px 27px 7px;
+}
+
+.item-sizing {
+    width: 189%;
+}
+
+.premium_post {
+    border: 0px solid;
+    margin-top: 8%;
+}
+
+.sizing {
+    margin-top: 8%;
+    border: 1px;
+}
+
+
+.pagination {
+    display: block;
+    padding-top: 58%;
+    padding-bottom: 5%;
+}

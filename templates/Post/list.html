@@ -1,0 +1,83 @@
+{% extends 'Post/base.html' %}
+
+
+{% block content %}
+
+
+
+
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+       <div class="alert bg-warning mt-2 me-2 text-center p-2 fs-4">{{ message }}</div> 
+    </div>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+
+<section class="new-posts flo">
+  <div class="col-12 item-sizing">
+    {% for post in object_list %}
+      <div class="col-8">
+        <div class="card-header head-change">
+          <h2 class="block-item"><a class="padding-block" style="text-decoration: none; color: black;" href="{% url 'account:profile' post.user %}">{{post.user}}</a></h2>
+          {% if request.user.is_premium_account %}
+          <a href="{% url 'account:block-user' post.user  %}" class="btn btn-warning "> Block</a>
+          <a href="{% url 'account:report' post.user post.text   %}" class="btn btn-warning "> Report</a>
+          {% endif %}
+        </div>
+        <div class="card-body body-change">
+          <p>{{post.text|linebreaks}}</p>
+          <small>{{post.created}}</small>
+        </div>
+      </div>
+      {% empty %}
+      پستی وجود ندارد
+    {% endfor %}
+  </div>
+</section>
+
+<section class="special-place flo">
+  {% for premium in object_list %}
+    {% if premium.user.is_premium_account %}
+
+    <div class="card sizing">
+      <div class="card-header bg-info ">
+        {{premium.user}}
+      </div>
+      <div class="card-body bg-warning">
+        <p class="card-text fs-5">{{premium.text}}</p>
+        <p class="text-dark fs-6">{{premium.created}}</p>
+      </div>
+    </div>
+
+    {% endif %}
+  {% endfor %}
+
+</section>
+<section>
+  <!-- Pagination -->
+  {% if is_paginated %}
+      <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="{% url 'post:List' page_obj.previous_page_number %}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a href="{% url 'post:List' page_obj.next_page_number %}">next</a>
+            {% endif %}
+        </span>
+    </div>
+  {% endif %}
+  </section>
+{% endblock %}
