@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect
 from .forms import AddPostForm,EditPostForm
 from django.db.models import Q
 from .mixins import SearchPremissionMixin
-from .models import PostModel
+from .models import PostModel,IPAddress
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
@@ -17,14 +17,17 @@ class ListPostView(LoginRequiredMixin,ListView):
     paginate_by = 3
     template_name = "Post/list.html"
 
+
     def get_queryset(self):
+
         if self.request.user.blocked_users.exists():
             block = PostModel.objects.exclude(Q(user__in = self.request.user.blocked_users.all())|Q(status = False))
         else:
             block = PostModel.objects.filter(status = True)
         return block
 
-  
+
+
         
 class AddPostView(LoginRequiredMixin,CreateView):
     template_name = 'Post/add-post.html'
@@ -69,3 +72,6 @@ class SearchView(SearchPremissionMixin,ListView):
         context = super().get_context_data(**kwargs)
         context['search'] = self.request.GET.get('search')
         return context
+
+
+

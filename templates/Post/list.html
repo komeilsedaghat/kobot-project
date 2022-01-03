@@ -46,8 +46,8 @@
   {% for premium in object_list %}
     {% if premium.user.is_premium_account %}
 
-    <div class="card sizing">
-      <div class="card-header bg-info ">
+    <div class="card sizing bg-warning">
+      <div class="card-header bg-info header-rad">
         {{premium.user}}
       </div>
       <div class="card-body bg-warning">
@@ -59,22 +59,23 @@
     {% endif %}
   {% endfor %}
 
+{{view}}
+
 </section>
 <section>
   <!-- Pagination -->
   {% if is_paginated %}
       <div class="pagination">
-        <span class="step-links">
+        <span class="step-links badge ">
             {% if page_obj.has_previous %}
-                <a href="{% url 'post:List' page_obj.previous_page_number %}">previous</a>
+                <a class="next-pre" style="text-decoration: none;" href="{% url 'post:List' page_obj.previous_page_number %}">previous</a>
             {% endif %}
-    
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            <span class="current badge bg-info text-dark page-of">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
             </span>
     
             {% if page_obj.has_next %}
-                <a href="{% url 'post:List' page_obj.next_page_number %}">next</a>
+                <a class="next-pre" style="text-decoration: none;" href="{% url 'post:List' page_obj.next_page_number %}">next</a>
             {% endif %}
         </span>
     </div>
