@@ -1,2 +1,5 @@
 # kobot-project
-social network 
+
+social network with Django
+شبکه اجتماعی با جنگو
+
