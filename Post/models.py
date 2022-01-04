@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.base import Model
 from account.models import User
 
 # Create your models here.
@@ -23,3 +24,13 @@ class IPAddress(models.Model):
 
     def __str__(self):
         return self.ip_address
+
+
+class CommentsModel(models.Model):
+    post = models.ForeignKey(PostModel,null=True,blank=True,on_delete=models.CASCADE)
+    user = models.ForeignKey(User,null=True,blank=True,on_delete=models.CASCADE)
+    comment = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user} - {self.comment}"

@@ -1,5 +1,5 @@
 {% extends 'Post/base.html' %}
-
+{% load static %}
 
 {% block content %}
 
@@ -34,6 +34,7 @@
         <div class="card-body body-change">
           <p>{{post.text|linebreaks}}</p>
           <small>{{post.created}}</small>
+          <a href="{% url 'post:comment' post.text %}"><img class="com-img"  src="{% static 'Post/img/comments-solid.svg' %}" alt="comment"></a> 
         </div>
       </div>
       {% empty %}
@@ -59,7 +60,6 @@
     {% endif %}
   {% endfor %}
 
-{{view}}
 
 </section>
 <section>

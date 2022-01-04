@@ -1,0 +1,22 @@
+{% extends 'Post/base.html' %}
+
+{% block content %}
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <label class="badge bg-warning mt-3 mb-1 fs-3 text-dark" for="">Comment</label>
+            {{form.comment}}
+        <input class="btn btn-primary p-2" type="submit" value="send Comment">
+        
+    </form>
+    <section>
+        {% for cm in comments %}
+        <div class="comment">
+            <h3 class="commenter">{{cm.user}}</h3>
+            <p class="comment-text">{{cm.comment}}</p>
+            <small class="comment-time" >{{cm.created}}</small>
+        </div>
+        {% endfor %}
+    </section>
+
+{% endblock %}

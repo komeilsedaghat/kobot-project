@@ -11,7 +11,7 @@ class User(AbstractUser):
     phone_number = models.CharField(max_length=11,validators=[mobile_validation],null=True)
     is_premium_account = models.BooleanField(default=False)
     last_profile_updated = models.DateTimeField(auto_now=True)
-    blocked_users = models.ManyToManyField('self', related_name="blocked_users",blank=True)
+    blocked_users = models.ManyToManyField('self', blank=True)
 
     def legal_age(self):
         if self.age <= 18 :

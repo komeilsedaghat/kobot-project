@@ -1,13 +1,12 @@
-from account.models import User
-from django.http.response import Http404
-from django.shortcuts import redirect, render,get_object_or_404
 from django.views.generic import ListView,CreateView
+from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.http import HttpResponseRedirect
-from .forms import AddPostForm,EditPostForm
+from .forms import AddPostForm,EditPostForm,CommentForm
 from django.db.models import Q
 from .mixins import SearchPremissionMixin
-from .models import PostModel,IPAddress
+from .models import CommentsModel, PostModel
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
@@ -25,6 +24,7 @@ class ListPostView(LoginRequiredMixin,ListView):
         else:
             block = PostModel.objects.filter(status = True)
         return block
+
 
 
 
@@ -75,3 +75,29 @@ class SearchView(SearchPremissionMixin,ListView):
 
 
 
+class CommentView(CreateView):
+    template_name = 'Post/comment.html'
+    form_class = CommentForm
+
+    def form_valid(self,form):
+        my_form = form.save(commit = False)
+        post_text = self.kwargs.get('text')
+        post = PostModel.objects.get(text = post_text)
+        my_form.post = post
+        my_form.user = self.request.user
+        my_form.save()
+        return redirect('/')
+
+
+    def get_context_data(self, **kwargs):
+        post_text = self.kwargs.get('text')
+        post = PostModel.objects.get(text = post_text)
+        context = super().get_context_data(**kwargs)
+        context['comments'] = CommentsModel.objects.filter(post = post )
+        return context
+
+    # def get_object(self):
+    #     post_text = self.kwargs.get('text')
+    #     post = PostModel.objects.get(text = post_text)
+    #     comment = get_object_or_404(CommentsModel,post = post)
+    #     return comment
