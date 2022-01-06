@@ -1,5 +1,4 @@
-from django.forms import fields
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, request
 from django.http.response import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.views import LoginView
@@ -8,13 +7,15 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
 from django.views.generic import View,DeleteView
 from django.contrib import messages
 from django.contrib.auth.views import PasswordResetView
+from django.http import JsonResponse
 from django.views.generic.list import ListView
 from .mixins import ChangeProfileMixins
 from Post.models import PostModel
-from .models import BlockAndReportModel, User
+from .models import BlockAndReportModel, RelationModel, User
 from django.contrib.auth.views import PasswordResetDoneView,PasswordResetConfirmView,PasswordResetCompleteView
 
 from .forms import LoginUserForm,RegisterUserForm,ProfileForm,BlockUseForm,ReportUserForm
@@ -44,9 +45,6 @@ class LogoutView(LoginRequiredMixin,View):
 
 
 
-
-
-
 class PassResetView(PasswordResetView):
     template_name = 'auth/password_reset/password_reset_form.html'
     success_url = reverse_lazy('account:password_reset_done')
@@ -68,13 +66,12 @@ class PassResetComplete(PasswordResetCompleteView):
 
 
 
-
-
-
 class ProfileView(ChangeProfileMixins,LoginRequiredMixin,UpdateView):
     template_name = 'auth/profile.html'
     success_url = '/'
     form_class = ProfileForm
+
+
 
 
     def get_object(self):
@@ -87,6 +84,14 @@ class ProfileView(ChangeProfileMixins,LoginRequiredMixin,UpdateView):
         post = PostModel.objects.filter(user = user)
         context = super().get_context_data(**kwargs)
         context['post'] = post
+
+
+        is_following = False
+        relation = RelationModel.objects.filter(from_user = self.request.user,to_user = user )
+        if relation.exists():
+            is_following = True
+
+        context['is_following'] = is_following
         return context
 
 
@@ -131,3 +136,30 @@ class ReportUserView(CreateView):
         my_form.save()
 
         return redirect('post:List')
+
+
+
+@login_required
+def follow(request):
+	if request.method == 'POST':
+		user_id = request.POST['user_id']
+		following = get_object_or_404(User, pk=user_id)
+		check_relation = RelationModel.objects.filter(from_user=request.user, to_user=following)
+		if check_relation.exists():
+			return JsonResponse({'status':'exists'})
+		else:
+			RelationModel(from_user=request.user, to_user=following).save()
+			return JsonResponse({'status':'ok'})
+
+
+@login_required
+def unfollow(request):
+	if request.method == 'POST':
+		user_id = request.POST['user_id']
+		following = get_object_or_404(User, pk=user_id)
+		check_relation = RelationModel.objects.filter(from_user=request.user, to_user=following)
+		if check_relation.exists():
+			check_relation.delete()
+			return JsonResponse({'status':'ok'})
+		else:
+			return JsonResponse({'status':'notexists'})

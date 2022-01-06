@@ -1,6 +1,17 @@
 from django.urls import path
-from .views import RegisterUserView,LogoutView,ProfileView,BlockUserView,PassResetView,PassResetDoneView,PassResetConfirm,PassResetComplete,ReportUserView
-
+from .views import (
+    LogoutView,
+    follow,
+    ProfileView,
+    unfollow,
+    PassResetView,
+    BlockUserView,
+    ReportUserView,
+    PassResetConfirm,
+    RegisterUserView,
+    PassResetDoneView,
+    PassResetComplete,
+)
 app_name = 'account'
 
 urlpatterns = [
@@ -17,6 +28,8 @@ urlpatterns = [
     path('profile/<str:username>/',ProfileView.as_view(),name='profile'),
     path('block/<str:username>/',BlockUserView.as_view(),name = 'block-user' ),
     path('report/<str:username>/<str:text>/',ReportUserView.as_view(),name='report'),
+	path('follow/', follow, name='follow'),
+	path('unfollow/', unfollow, name='unfollow'),
 
 
 

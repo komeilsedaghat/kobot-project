@@ -25,10 +25,12 @@
     {% for post in object_list %}
       <div class="col-8">
         <div class="card-header head-change">
-          <h2 class="block-item"><a class="padding-block" style="text-decoration: none; color: black;" href="{% url 'account:profile' post.user %}">{{post.user}}</a></h2>
+          <h2 class="block-item"><a class="padding-block" style="text-decoration: none; color: rgb(255, 255, 255);" href="{% url 'account:profile' post.user %}">{{post.user}}</a></h2>
           {% if request.user.is_premium_account %}
-          <a href="{% url 'account:block-user' post.user  %}" class="btn btn-warning "> Block</a>
-          <a href="{% url 'account:report' post.user post.text   %}" class="btn btn-warning "> Report</a>
+          <span class="mar-button">
+            <a href="{% url 'account:block-user' post.user  %}" class="btn btn-danger button-profile "> Block</a>
+            <a href="{% url 'account:report' post.user post.text   %}" class="btn btn-danger button-profile "> Report</a>
+          </span>
           {% endif %}
         </div>
         <div class="card-body body-change">

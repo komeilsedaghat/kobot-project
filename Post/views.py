@@ -54,7 +54,7 @@ class EditPostView(LoginRequiredMixin,UpdateView):
     
 
     
-class SearchView(SearchPremissionMixin,ListView):
+class SearchView(LoginRequiredMixin,SearchPremissionMixin,ListView):
     template_name = 'Post/search.html'
 
     def get_queryset(self):
@@ -75,7 +75,7 @@ class SearchView(SearchPremissionMixin,ListView):
 
 
 
-class CommentView(CreateView):
+class CommentView(LoginRequiredMixin,CreateView):
     template_name = 'Post/comment.html'
     form_class = CommentForm
 
@@ -96,8 +96,4 @@ class CommentView(CreateView):
         context['comments'] = CommentsModel.objects.filter(post = post )
         return context
 
-    # def get_object(self):
-    #     post_text = self.kwargs.get('text')
-    #     post = PostModel.objects.get(text = post_text)
-    #     comment = get_object_or_404(CommentsModel,post = post)
-    #     return comment
+

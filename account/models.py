@@ -35,8 +35,6 @@ class User(AbstractUser):
 
 class BlockAndReportModel(models.Model):
 
-
-
     reporter = models.ForeignKey(User,null=True,on_delete= models.CASCADE,related_name='reporter')
     reported = models.ForeignKey(User,null=True,on_delete=models.CASCADE,related_name='user_report')
     report_on_post = models.ForeignKey("Post.PostModel",null=True,on_delete=models.CASCADE,related_name='post_reported')
@@ -46,3 +44,16 @@ class BlockAndReportModel(models.Model):
 
     def __str__(self):
         return f"{self.reported} - {self.report_text}"
+
+
+
+class RelationModel(models.Model):
+    from_user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='follower')
+    to_user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='following')
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('-created',)
+
+    def __str__(self):
+        return f"{self.from_user} followed {self.to_user}"
