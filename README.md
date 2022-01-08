@@ -1,7 +1,7 @@
 # kobot-project
 
 ***What is Kobot Project?***
-> kobot is a simple project with Djnago
+> kobot is a social media with Djnago
 
 **Features:**
 
