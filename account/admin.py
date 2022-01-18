@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User,BlockAndReportModel,RelationModel
+from .models import User,BlockAndReportModel,RelationFollowingModel
 
 
 
@@ -18,4 +18,4 @@ UserAdmin.fieldsets[2][1]['fields'] = (
 
 admin.site.register(User,UserAdmin)
 admin.site.register(BlockAndReportModel)
-admin.site.register(RelationModel)
+admin.site.register(RelationFollowingModel)

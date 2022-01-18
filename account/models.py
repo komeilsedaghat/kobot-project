@@ -47,7 +47,7 @@ class BlockAndReportModel(models.Model):
 
 
 
-class RelationModel(models.Model):
+class RelationFollowingModel(models.Model):
     from_user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='follower')
     to_user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='following')
     created = models.DateTimeField(auto_now_add=True)
@@ -57,3 +57,6 @@ class RelationModel(models.Model):
 
     def __str__(self):
         return f"{self.from_user} followed {self.to_user}"
+
+
+

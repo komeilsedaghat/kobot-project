@@ -15,7 +15,7 @@ from django.http import JsonResponse
 from django.views.generic.list import ListView
 from .mixins import ChangeProfileMixins
 from Post.models import PostModel
-from .models import BlockAndReportModel, RelationModel, User
+from .models import BlockAndReportModel, RelationFollowingModel, User
 from django.contrib.auth.views import PasswordResetDoneView,PasswordResetConfirmView,PasswordResetCompleteView
 
 from .forms import LoginUserForm,RegisterUserForm,ProfileForm,BlockUseForm,ReportUserForm
@@ -87,11 +87,27 @@ class ProfileView(ChangeProfileMixins,LoginRequiredMixin,UpdateView):
 
 
         is_following = False
-        relation = RelationModel.objects.filter(from_user = self.request.user,to_user = user )
+        relation = RelationFollowingModel.objects.filter(from_user = self.request.user,to_user = user )
         if relation.exists():
             is_following = True
 
         context['is_following'] = is_following
+
+        #count post,follower,following
+
+        #follower
+        follower = RelationFollowingModel.objects.filter(to_user = user).count()
+        context['follower'] = follower
+
+        #following
+        following = RelationFollowingModel.objects.filter(from_user = user).count()
+        context['following'] = following
+
+        #post
+        count_post = post.count()
+        context['count_post'] = count_post
+
+
         return context
 
 
@@ -144,12 +160,13 @@ def follow(request):
 	if request.method == 'POST':
 		user_id = request.POST['user_id']
 		following = get_object_or_404(User, pk=user_id)
-		check_relation = RelationModel.objects.filter(from_user=request.user, to_user=following)
+		check_relation = RelationFollowingModel.objects.filter(from_user=request.user, to_user=following)
 		if check_relation.exists():
 			return JsonResponse({'status':'exists'})
 		else:
-			RelationModel(from_user=request.user, to_user=following).save()
+			RelationFollowingModel(from_user=request.user, to_user=following).save()
 			return JsonResponse({'status':'ok'})
+
 
 
 @login_required
@@ -157,9 +174,11 @@ def unfollow(request):
 	if request.method == 'POST':
 		user_id = request.POST['user_id']
 		following = get_object_or_404(User, pk=user_id)
-		check_relation = RelationModel.objects.filter(from_user=request.user, to_user=following)
+		check_relation = RelationFollowingModel.objects.filter(from_user=request.user, to_user=following)
 		if check_relation.exists():
 			check_relation.delete()
 			return JsonResponse({'status':'ok'})
 		else:
 			return JsonResponse({'status':'notexists'})
+
+

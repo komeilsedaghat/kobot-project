@@ -1,56 +1,93 @@
 body {
-    background: rgb(99, 39, 120)
+    background-color: rgb(182, 222, 229);
 }
 
-.form-control:focus {
-    box-shadow: none;
-    border-color: #BA68C8
+.name-user {
+    text-align: center;
+    margin-top: 36px;
+    font-size: 43px;
+    padding: 1%;
+    margin-right: 3%;
+    box-shadow: 6px 11px 7px 1px;
+    width: 59%;
+    margin-left: 20%;
+    background-color: #2680ac;
+    border-radius: 16px;
 }
 
-.profile-button {
-    background: rgb(99, 39, 120);
-    box-shadow: none;
-    border: none
-}
 
-.profile-button:hover {
-    background: #682773
+.button-follow {
+    display: block;
+    margin-left: 42%;
+    width: 17%;
+    border-radius: 23px 4px 22px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 19px;
 }
-
-.profile-button:focus {
-    background: #682773;
-    box-shadow: none
-}
-
-.profile-button:active {
-    background: #682773;
-    box-shadow: none
-}
-
-.back:hover {
-    color: #682773;
-    cursor: pointer
-}
-
-.labels {
-    font-size: 11px
-}
-
-.add-experience:hover {
-    background: #BA68C8;
-    color: #fff;
-    cursor: pointer;
-    border: solid 1px #BA68C8
-}
-
-.row.row-cols-1.row-cols-md-3.g-4 {
-    margin-left: 7%;
+.x-info {
+    display: inline-block;
+    margin-left: 4%;
+    margin-top: 2%;
+    margin-bottom: 1%;
     margin-right: 7%;
-    margin-bottom: 3%;
+}
+
+.all-info {
+    margin-top: 29px;
+    margin-left: 31%;
+    margin-right: 31%;
+    border: 9px inset #1faaff;
+    border-radius: 33px 0px 33px 0px;
+    text-align: center;
+    box-shadow: 6px 11px 7px 1px;
+}
+
+.block-report {
+    display: grid;
+    margin: -9% 94% 0% -2%;
+}
+
+.block_user {
+    margin: 1px;
 }
 
 
-.h-100 {
-    height: 100% !important;
-    border-radius: 34px 0px;
+
+
+.post {
+    border: 0px solid;
+    width: 29%;
+    margin-left: 4%;
+    margin-top: 4%;
+    float: left;
+    background-color: #e8e0e0;
+    padding: 2%;
+    box-shadow: 6px 11px 7px 1px;
+    border-radius: 50px 50px 0px 0px;
+    margin-bottom: 2%;
+}
+.text_post {
+    font-size: 14px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-align: justify;
+}
+
+.user_posted {
+    font-family:Georgia, 'Times New Roman', Times, serif;
+}
+
+
+.user {
+    border: 0px solid;
+    margin-left: 25%;
+    background-color: #eae1e1;
+    border-radius: 11px 0px;
+        border-top-left-radius: 11px;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 11px;
+        border-bottom-left-radius: 0px;
+    font-size: 39px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin-top: 2%;
+    width: 53%;
 }

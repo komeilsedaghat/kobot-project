@@ -7,98 +7,77 @@
 
 {% endblock %}
 
-
-
 {% block content %}
-<link rel="stylesheet" href="{% static 'auth/profile/style.css' %}">
-<link rel="stylesheet" href="{% static 'auth/profile/rtl.css' %}">
-
-{% if form.errors %}
-  {% for field in form %}
-      {% for error in field.errors %}
-          <div class="alert alert-danger text-center mt-3">
-              <strong>{{ error|escape }}</strong>
-          </div>
-      {% endfor %}
-  {% endfor %}
-  {% for error in form.non_field_errors %}
-      <div class="alert alert-danger text-center mt-3">
-          <strong>{{ error|escape }}</strong>
-      </div>
-  {% endfor %}
-{% endif %}
-
-
-{% if request.user.username == object.username %}
-<form action="" method="POST">
-    {% csrf_token %}
-    <div class="container rounded bg-white mt-5 mb-5">
-        <div class="row">
-            <div class="col-md-3 border-right">
-            </div>
-                <div class="col-md-5 border-right">
-                    <div class="p-3 py-5">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="text-right">Profile</h4>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-md-6"><label class="labels">First Name</label><br> {{form.first_name}}</div>
-                            <div class="col-md-6"><label class="labels">Last Name</label> <br> {{form.last_name}}</div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-12"><label class="labels">username</label><br>{{form.username}} </div>
-                        </div>
-                        <input class="btn btn-info mt-2 " type="submit" value="change profile">
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-    </div>
-</div>
-</form>
-{% else %}
-
-    <div class="container rounded bg-white mt-5 mb-5">
-        <div class="row">
-            <div class="col-md-3 border-right">
-            </div>
-            <div class="col-md-5 border-right">
-                <div class="p-3 py-5">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="text-right">Profile</h4>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-md-5 alert bg-info me-1"><label class="labels">First Name</label><br> {{object.first_name}}</div>
-                        <div class="col-md-5 alert bg-info me-1"><label class="labels">Last Name</label> <br> {{object.last_name}}</div>
-                            <div class="col-md-5 alert bg-info me-1"><label class="labels">username</label><br>{{object.username}} </div>
-                            {% if is_following == False %}
-                            <button id="following_btn" data-id="{{ user.id }}" style="display:block" class="btn btn-primary text-center mx-auto">follow</button>
-                            {% else %}
-                            <button id="following_btn" data-id="{{ user.id }}" style="display:block" class="btn btn-warning text-center mx-auto">unfollow</button>
-                            {% endif %}
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
-    </div>
+    <link rel="stylesheet" href="{% static 'auth/profile/style.css' %}">
     
-{% endif %}
-<div class="row row-cols-1 row-cols-md-3 g-4">
-    {% for p in post %}
-    <div class="col">
-      <div class="card h-100">
-        <div class="card-body">
-          <span class="card-title fs-4">{{p.user}}</span>
-          <span class="badge bg-primary"><a href="{% url 'post:edit-post' p.pk %}" style="text-decoration: none; color: aliceblue;"> Edit Post</a></span>
-          <p class="card-text">{{p.text}}</p>
-          <small>{{p.created}}</small>
-        </div>
-      </div>
-    </div>
+    {% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger text-center mt-3">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
     {% endfor %}
-</div>
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger text-center mt-3">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+  {% endif %}
+  
+  
+
+  <body>
+    <section>
+        <div class="name-user">
+            <p class="user"> {{object.username}} </p>
+            {% if request.user.username != object.username %}
+            {% if is_following == False %}
+                <button id="following_btn" data-id="{{ user.id }}" class="btn btn-primary button-follow">follow</button>
+            {% else %}
+                <button id="following_btn" data-id="{{ user.id }}" class="btn btn-warning button-follow">unfollow</button>
+            {% endif %}
+            <span class="block-report">
+                <button class="btn btn-danger block_user">block</button>
+                <button class="btn btn-danger block_user">Report</button>
+            </span>
+            {% endif %}
+        </div>
+
+        <div class="info-user">
+            <div class="all-info">
+                <div class="x-info">
+                    <label for="">Following </label>
+                    <div>{{following}}</div>
+                </div>
+                <div class="x-info">
+                    <label for="">Follower</label>
+                    <div>{{follower}}</div>
+                </div>
+                <div class="x-info">
+                    <label for="">Post</label>
+                    <div>{{count_post}}</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="post_user_all">
+        <div class="all_post">
+            {% for post in post %}
+            <div class="post">
+                <h1 class="user_posted">{{post.user}}</h1>
+                <hr>
+                <p class="text_post">
+                    {{post.text}}
+                </p>
+                <small>{{post.created}}</small>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    
+</body>
 
 {% endblock %}
+</html>

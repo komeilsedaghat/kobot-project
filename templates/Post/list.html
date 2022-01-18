@@ -20,10 +20,27 @@
 
 
 
+<section class="special-posts">
+  {% for premium in object_list %}
+    {% if premium.user.is_premium_account %}
+    <div class="special-post">
+      <h2 class="special-title">{{premium.user}}</h2><hr>
+      <p class="special-text">{{premium.text}}</p>
+      <small class="special-created">{{premium.created}}</small>
+    </div>
+
+    
+    {% endif %}
+  {% endfor %}
+</section>
+
+
+
+
 <section class="new-posts flo">
-  <div class="col-12 item-sizing">
+  <div class=" item-sizing">
     {% for post in object_list %}
-      <div class="col-8">
+      <div class="">
         <div class="card-header head-change">
           <h2 class="block-item"><a class="padding-block" style="text-decoration: none; color: rgb(255, 255, 255);" href="{% url 'account:profile' post.user %}">{{post.user}}</a></h2>
           {% if request.user.is_premium_account %}
@@ -35,8 +52,19 @@
         </div>
         <div class="card-body body-change">
           <p>{{post.text|linebreaks}}</p>
+          
+          {% if post.video %}
+					<video  controls="controls" preload="preload" style="width: 518px; height: 294px;margin-left: 61px;">
+						<source src="{{ post.video.url }}" type="video/mp4"></source>
+					</video><br>
+          {% endif %}
+          {% if post.image %}
+            <img src="{{ post.image.url }}" alt=".."  style="width: 518px; height: 294px;margin-left: 61px;"><br>
+          {% endif %}
           <small>{{post.created}}</small>
+          <span class="comment-icon">
           <a href="{% url 'post:comment' post.text %}"><img class="com-img"  src="{% static 'Post/img/comments-solid.svg' %}" alt="comment"></a> 
+          </span>
         </div>
       </div>
       {% empty %}
@@ -45,25 +73,7 @@
   </div>
 </section>
 
-<section class="special-place flo">
-  {% for premium in object_list %}
-    {% if premium.user.is_premium_account %}
 
-    <div class="card sizing bg-warning">
-      <div class="card-header bg-info header-rad">
-        {{premium.user}}
-      </div>
-      <div class="card-body bg-warning">
-        <p class="card-text fs-5">{{premium.text}}</p>
-        <p class="text-dark fs-6">{{premium.created}}</p>
-      </div>
-    </div>
-
-    {% endif %}
-  {% endfor %}
-
-
-</section>
 <section>
   <!-- Pagination -->
   {% if is_paginated %}

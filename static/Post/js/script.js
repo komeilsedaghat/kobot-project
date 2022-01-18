@@ -37,11 +37,11 @@ $('#following_btn').click(function(){
     if(follow == 'follow'){
         var url = '/account/follow/'
         var btn_text = 'unfollow'
-        var btn_class = 'btn btn-warning text-center mx-auto'
+        var btn_class = 'btn btn-warning button-follow'
     }else{
         var url = '/account/unfollow/'
         var btn_text = 'follow'
-        var btn_class = 'btn btn-primary text-center mx-auto'
+        var btn_class = 'btn btn-primary button-follow'
     }
     
     

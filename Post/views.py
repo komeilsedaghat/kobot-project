@@ -6,25 +6,24 @@ from .forms import AddPostForm,EditPostForm,CommentForm
 from django.db.models import Q
 from .mixins import SearchPremissionMixin
 from .models import CommentsModel, PostModel
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect,render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
 
 class ListPostView(LoginRequiredMixin,ListView):
-    paginate_by = 3
+    paginate_by = 5
+    
     template_name = "Post/list.html"
 
 
     def get_queryset(self):
-
         if self.request.user.blocked_users.exists():
             block = PostModel.objects.exclude(Q(user__in = self.request.user.blocked_users.all())|Q(status = False))
         else:
             block = PostModel.objects.filter(status = True)
         return block
-
 
 
 
