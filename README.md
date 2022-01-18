@@ -1,7 +1,7 @@
 # kobot-project
 
 ***What is Kobot Project?***
-> kobot is a simple project with Djnago
+> kobot is a social media with Djnago
 
 **Features:**
 
@@ -9,4 +9,4 @@
 >2. block and report user
 >3. Limitations for normal user(like change username and etc)
 >4. get user ip 
-
+>5. follow and unfollow 
