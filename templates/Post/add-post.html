@@ -8,8 +8,17 @@
                 Add Post
             </div>
             <div class="card-body bg-white">
-                {{form.text}}
+                <div class="form-control">{{form.text}}</div>
+
+                <p class="alert bg-danger p-2 text-white">You can upload in one section , image or video</p>
+
+                <label> Select your image </label>
+                <div class="form-control">{{form.image}}</div>
+
+                <label>Select your video</label>
+                <div class="form-control">{{form.video}}</div>
             </div>
+
             <input type="submit" value="Send" class="btn btn-warning">
         </div>
     </form>

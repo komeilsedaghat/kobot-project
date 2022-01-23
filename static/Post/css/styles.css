@@ -3,7 +3,7 @@ body {
 }
 
 .head-change {
-    background-color: #0d0d0d;
+    background-color: #f00;
     font-family: serif;
     margin-top: 8%;
     border: 0px solid;
@@ -13,7 +13,7 @@ body {
 }
 
 .body-change {
-    background-color: #828282;
+    background-color: #333;
     margin-left: 29px;
     margin-bottom: 5%;
     border: 0px solid;
@@ -136,8 +136,8 @@ body {
     margin-left: 59%;
 }
 
-.comment-icon{
-    margin-left: 74%;
+.comment-icon {
+    margin-left: 4px;
 }
 
 .change-box {
@@ -210,4 +210,20 @@ body {
 
 .special-text {
     font-family: initial;
+}
+
+.img-item {
+    width: 595px;
+    height: auto;
+    margin-left: 13%;
+}
+
+.body-text {
+    
+    font-size: 27px !important;
+    font-family: initial;
+    margin-top: 6px;
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    color: white;
 }

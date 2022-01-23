@@ -1,3 +1,4 @@
+from django.forms import forms
 from django.views.generic import ListView,CreateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
@@ -12,34 +13,40 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
 
-class ListPostView(LoginRequiredMixin,ListView):
-    paginate_by = 5
-    
+
+class ListAddPostView(LoginRequiredMixin,CreateView):
     template_name = "Post/list.html"
+    form_class = AddPostForm
+    
+    def form_valid(self,form):
+        my_form = form.save(commit = False)
+        my_form.user = self.request.user
+
+        file = self.request.FILES['file']
+        if file.content_type == 'image/png':
+            my_form.image = file
+        elif file.content_type == 'video/mp4':
+            my_form.video = file
+        else:
+            raise forms.ValidationError('your file most be mp4 or png')
+        my_form.save()
+        url = reverse_lazy('post:List')
+        return HttpResponseRedirect(url)
 
 
-    def get_queryset(self):
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
         if self.request.user.blocked_users.exists():
             block = PostModel.objects.exclude(Q(user__in = self.request.user.blocked_users.all())|Q(status = False))
         else:
             block = PostModel.objects.filter(status = True)
-        return block
+            
+        context['object_list'] = block
+        return context
 
 
 
-        
-class AddPostView(LoginRequiredMixin,CreateView):
-    template_name = 'Post/add-post.html'
-    form_class = AddPostForm
     
-
-    def form_valid(self,form):
-        x = form.save(commit = False)
-        x.user = self.request.user
-        x.save()
-        url = reverse_lazy('post:List')
-        return HttpResponseRedirect(url)
-        
     
 class EditPostView(LoginRequiredMixin,UpdateView):
     template_name = 'Post/edit-post.html'

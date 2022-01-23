@@ -19,60 +19,51 @@
 {% endif %}
 
 
+<div class="card">
+  <div class="card-header bg-transparent">
+      <form class="form-inline" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+          <div class="input-group w-100">
+            {{form.text}}
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <label for="file" class="fas fa-camera"></label>
+                {{form.file}}
+              </div>
 
-<section class="special-posts">
-  {% for premium in object_list %}
-    {% if premium.user.is_premium_account %}
-    <div class="special-post">
-      <h2 class="special-title">{{premium.user}}</h2><hr>
-      <p class="special-text">{{premium.text}}</p>
-      <small class="special-created">{{premium.created}}</small>
-    </div>
+              <div class="input-group-text">
+                <label for="send" class="fas fa-paper-plane"></label>
+                <input type="submit" id="send" hidden>
+              </div>
 
-    
-    {% endif %}
-  {% endfor %}
-</section>
-
-
-
-
-<section class="new-posts flo">
-  <div class=" item-sizing">
-    {% for post in object_list %}
-      <div class="">
-        <div class="card-header head-change">
-          <h2 class="block-item"><a class="padding-block" style="text-decoration: none; color: rgb(255, 255, 255);" href="{% url 'account:profile' post.user %}">{{post.user}}</a></h2>
-          {% if request.user.is_premium_account %}
-          <span class="mar-button">
-            <a href="{% url 'account:block-user' post.user  %}" class="btn btn-danger button-profile "> Block</a>
-            <a href="{% url 'account:report' post.user post.text   %}" class="btn btn-danger button-profile "> Report</a>
-          </span>
-          {% endif %}
-        </div>
-        <div class="card-body body-change">
-          <p>{{post.text|linebreaks}}</p>
-          
-          {% if post.video %}
-					<video  controls="controls" preload="preload" style="width: 518px; height: 294px;margin-left: 61px;">
-						<source src="{{ post.video.url }}" type="video/mp4"></source>
-					</video><br>
-          {% endif %}
-          {% if post.image %}
-            <img src="{{ post.image.url }}" alt=".."  style="width: 518px; height: 294px;margin-left: 61px;"><br>
-          {% endif %}
-          <small>{{post.created}}</small>
-          <span class="comment-icon">
-          <a href="{% url 'post:comment' post.text %}"><img class="com-img"  src="{% static 'Post/img/comments-solid.svg' %}" alt="comment"></a> 
-          </span>
-        </div>
-      </div>
-      {% empty %}
-      پستی وجود ندارد
-    {% endfor %}
+           </div>
+          </div>
+      </form>
   </div>
-</section>
-
+  {% for post in object_list %}
+    <div class="card-body">
+      <div class="media">
+        <img src="{% static 'Post/img/avatar-mdo.png' %}" alt="img" class="rounded-circle mr-3" width="55px" height="55px">
+        <div class="media-body">
+          <h5>{{post.user}}</h5>
+            <p class="text-justify">{{post.text}}</p>
+            {% if post.image %}
+            <a href="" data-lightbox="id"><img src="{{post.image.url}}" alt="" class="img-fluid shadow-sm img-thumbnail">   </a>   
+            {% endif %}
+            {% if post.video %}
+            <video  controls="controls" preload="preload" class="img-fluid shadow-sm img-thumbnail">
+              <source src="{{ post.video.url }}" type="video/mp4"></source>
+            </video><br>
+            {% endif %}
+          </div>
+        <small class="text-muted">{{post.created|timesince}} ago</small>
+      </div>
+      
+      <a href="{% url 'post:comment' post.text %}"><img class="com-img"  src="{% static 'Post/img/comments-solid.svg' %}" alt="comment"></a> 
+    </div>
+    <hr>
+    <br>
+  {% endfor %}
 
 <section>
   <!-- Pagination -->
@@ -93,4 +84,7 @@
     </div>
   {% endif %}
   </section>
+
+
 {% endblock %}
+
