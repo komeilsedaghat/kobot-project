@@ -12,11 +12,41 @@
     {% for message in messages %}
     <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>
         {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
-       <div class="alert bg-warning mt-2 me-2 text-center p-2 fs-4">{{ message }}</div> 
+       <div class="alert bg-warning mt-2 me-2 text-center p-2 fs-4">{{ message }}</div>
     </div>
     {% endfor %}
 </ul>
 {% endif %}
+
+
+
+
+<div class="card-user card-left1 mb-4">
+
+  <div class="card-body text-center ">
+    {% if request.user.profile %}
+    <img src="{{ request.user.profile.url }}" alt="" class="circle"  style="height: 70px; width: 70px;">
+    {% else %}
+      <li class="fas fa-user" style="font-size: 30px;"></li>
+    {% endif %}
+      <h5 class="card-title">{{request.user.username}}</h5>
+      <p class="card-text text-justify mb-2">{{request.user.bio|linebreaks}}</p>
+      <ul class="list-unstyled nav justify-content-center">
+        {% if request.user.is_premium_account == 1 %}
+        <div class="">Account is Premium?<li class="fas fa-check-circle fs-4" style="color: green; padding-left: 5px; margin-top: 2px;"  ></li></div>
+        {% else %}
+        <div class="">Account is Premium?<li class="fas fa-times-circle fs-4" style="color: rgb(223, 10, 10); padding-left: 5px; margin-top: 2px;"  ></li></div>
+        {% endif %}
+        <br>
+        <div class="pr-4">
+          <span>Follower</span><br>{{follower}}
+        </div>
+        <div>
+          <span>Post</span><br>{{count_post}}
+        </div>
+      </ul>
+  </div>
+</div>
 
 
 <div class="card">
@@ -27,7 +57,7 @@
             {{form.text}}
             <div class="input-group-append">
               <div class="input-group-text">
-                <label for="file" class="fas fa-camera"></label>
+                <label for="file" class="fas fa-file"></label>
                 {{form.file}}
               </div>
 
@@ -43,46 +73,58 @@
   {% for post in object_list %}
     <div class="card-body">
       <div class="media">
-        <img src="{% static 'Post/img/avatar-mdo.png' %}" alt="img" class="rounded-circle mr-3" width="55px" height="55px">
+        <div class="circle">
+          {% if post.user.profile %}
+          <img class="image-profile" src="{{ post.user.profile.url }}" alt="profile">
+          {% else %}
+          <li class="fas fa-user "></li>
+          {% endif %}
+        </div>
         <div class="media-body">
-          <h5>{{post.user}}</h5>
+          <a href="{% url 'account:profile' post.user %}"><h5>{{post.user}}</h5></a>
             <p class="text-justify">{{post.text}}</p>
             {% if post.image %}
-            <a href="" data-lightbox="id"><img src="{{post.image.url}}" alt="" class="img-fluid shadow-sm img-thumbnail">   </a>   
+            <a href="" data-lightbox="id"><img src="{{post.image.url}}" alt="" class="img-fluid shadow-sm img-thumbnail">   </a>
             {% endif %}
             {% if post.video %}
             <video  controls="controls" preload="preload" class="img-fluid shadow-sm img-thumbnail">
               <source src="{{ post.video.url }}" type="video/mp4"></source>
             </video><br>
             {% endif %}
+            {% if post.audio %}
+            <audio controls >
+              <source src="{{ post.audio.url }}"  type="audio/mpeg">
+            </audio> 
+            {% endif %}
           </div>
         <small class="text-muted">{{post.created|timesince}} ago</small>
       </div>
-      
-      <a href="{% url 'post:comment' post.text %}"><img class="com-img"  src="{% static 'Post/img/comments-solid.svg' %}" alt="comment"></a> 
+
     </div>
     <hr>
     <br>
   {% endfor %}
 
-<section>
-  <!-- Pagination -->
-  {% if is_paginated %}
+
+
+  <section>
+    {% if is_paginated %}
       <div class="pagination">
-        <span class="step-links badge ">
-            {% if page_obj.has_previous %}
-                <a class="next-pre" style="text-decoration: none;" href="{% url 'post:List' page_obj.previous_page_number %}">previous</a>
-            {% endif %}
-            <span class="current badge bg-info text-dark page-of">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-            </span>
-    
-            {% if page_obj.has_next %}
-                <a class="next-pre" style="text-decoration: none;" href="{% url 'post:List' page_obj.next_page_number %}">next</a>
-            {% endif %}
+        <span>
+          {% if page_obj.has_previous %}
+          <a href="{% url 'post:List' page_obj.previous_page_number %}" style="text-decoration: none;" class="btn btn-info next-pre ">Pre</a>
+          {% endif %}
         </span>
-    </div>
-  {% endif %}
+        <span class="alert bg-dark text-white">
+          Page {{page_obj.number}} of {{page_obj.paginator.num_pages}}
+        </span>
+        <span>
+          {% if page_obj.has_next %}
+            <a href="{% url 'post:List' page_obj.next_page_number %}" style="text-decoration: none;" class="btn btn-info next-pre">Next</a>
+          {% endif %}   
+        </span>
+      </div>
+    {% endif %}
   </section>
 
 

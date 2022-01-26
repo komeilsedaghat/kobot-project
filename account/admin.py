@@ -10,6 +10,8 @@ UserAdmin.fieldsets[2][1]['fields'] = (
                                 'is_superuser',
                                 'is_premium_account',
                                 'age',
+                                'bio',
+                                'profile',
                                 'phone_number',
                                 'blocked_users',
                                 'groups',

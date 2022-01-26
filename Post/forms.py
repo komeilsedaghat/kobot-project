@@ -6,7 +6,7 @@ from .models import PostModel,CommentsModel
 
 class AddPostForm(forms.ModelForm):
  
-    file = forms.FileField()
+    file = forms.FileField(required=False)
 
     class Meta:
         model = PostModel

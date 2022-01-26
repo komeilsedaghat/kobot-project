@@ -1,47 +1,80 @@
-from django.forms import forms
 from django.views.generic import ListView,CreateView
-from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.http import HttpResponseRedirect
+from account.models import RelationFollowingModel
 from .forms import AddPostForm,EditPostForm,CommentForm
 from django.db.models import Q
 from .mixins import SearchPremissionMixin
 from .models import CommentsModel, PostModel
-from django.shortcuts import get_object_or_404, redirect,render
-from django.urls import reverse_lazy
+from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 # Create your views here.
 
 
 
-class ListAddPostView(LoginRequiredMixin,CreateView):
+class ListAddPostView(LoginRequiredMixin,ListView):
     template_name = "Post/list.html"
     form_class = AddPostForm
-    
-    def form_valid(self,form):
-        my_form = form.save(commit = False)
+    paginate_by = 2
+
+
+    def post(self,request,*args,**kwargs):
+        form = self.form_class()
+        my_form = form.save(commit=False)
         my_form.user = self.request.user
 
-        file = self.request.FILES['file']
-        if file.content_type == 'image/png':
-            my_form.image = file
-        elif file.content_type == 'video/mp4':
-            my_form.video = file
-        else:
-            raise forms.ValidationError('your file most be mp4 or png')
-        my_form.save()
-        url = reverse_lazy('post:List')
-        return HttpResponseRedirect(url)
+        text_form =self.request.POST.get('text')
+        print(text_form)
+        my_form.text = text_form
 
+        try:
+            file = self.request.FILES['file']
+            print(file.content_type)
+            if file.content_type[:5] == 'image':
+                my_form.image = file
+                my_form.save() 
+            elif file.content_type[:5] == 'video':
+                my_form.video = file
+                my_form.save() 
+            elif file.content_type[:5] == 'audio':
+                my_form.audio = file
+                my_form.save()
+       
+            else:
+                messages.error(self.request,"Your uploaded file most be video or photo")
+                      
+        except:
+            my_form.save()
 
-    def get_context_data(self,**kwargs):
-        context = super().get_context_data(**kwargs)
+        
+        return HttpResponseRedirect('/')
+
+        
+    
+
+    def get_queryset(self):
         if self.request.user.blocked_users.exists():
             block = PostModel.objects.exclude(Q(user__in = self.request.user.blocked_users.all())|Q(status = False))
         else:
             block = PostModel.objects.filter(status = True)
-            
-        context['object_list'] = block
+        return block
+    
+
+
+
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['form'] = AddPostForm()
+        #follower
+        follower = RelationFollowingModel.objects.filter(to_user = self.request.user).count()
+        context['follower'] = follower
+
+        #post
+        count_post = PostModel.objects.filter(user = self.request.user).count()
+        context['count_post'] = count_post
+
         return context
 
 

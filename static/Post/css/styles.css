@@ -73,8 +73,16 @@ body {
 
 
 .pagination {
-    padding-bottom: 5%;
-    padding-left: 45%;
+    padding-bottom: 3%;
+    padding-left: 36% !important;
+}
+
+.next-pre {
+    padding: 13px !important;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 7px !important;
+    width: 80px;
 }
 
 .header-rad {
@@ -210,6 +218,7 @@ body {
 
 .special-text {
     font-family: initial;
+    
 }
 
 .img-item {
@@ -226,4 +235,29 @@ body {
     text-align: center;
     font-family: 'Times New Roman', Times, serif;
     color: white;
+}
+
+.circle {
+    background-color: #d2caca;
+    border: 1px solid white;
+    height: 50px;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    width: 50px;
+    margin-right: 23px;
+    font-size: 35px;
+    text-align: center;
+}
+
+
+.image-profile {
+    width: 30px;
+    border: 1px solid white;
+    height: 50px;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    width: 50px;
+    margin-right: 23px;
 }

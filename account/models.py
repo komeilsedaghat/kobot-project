@@ -8,6 +8,8 @@ class User(AbstractUser):
     #validator for phone number
     mobile_validation = RegexValidator (regex='(0|\+98)?([ ]|-|[()]){0,2}9[1|2|3|4]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}',code="invalid",message='phone number most be entered in the format 09999999999')
     age = models.PositiveIntegerField(blank=True,null=True)
+    bio = models.TextField(max_length=200,blank=True)
+    profile = models.ImageField(blank = True,upload_to = 'user/profile/')
     phone_number = models.CharField(max_length=11,validators=[mobile_validation],null=True)
     is_premium_account = models.BooleanField(default=False)
     last_profile_updated = models.DateTimeField(auto_now=True)

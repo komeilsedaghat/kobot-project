@@ -1,9 +1,6 @@
-from email.mime import image
-from pyexpat import model
-from wsgiref.validate import validator
+from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models.base import Model
 from account.models import User
 
 # Create your models here.
@@ -18,11 +15,16 @@ def video_size(value):
     if value.size > 700000000:
         raise ValidationError("video can't be more then 700mb")
 
+def audio_size(value):
+    if value.size > 40000000:
+        messages.error("audio can't be more then 40mb")
+
 class PostModel(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     text = models.TextField()
     image = models.ImageField(upload_to = 'image/',blank = True,validators = [image_size])
     video = models.FileField(upload_to='video/',blank=True,validators = [video_size])
+    audio = models.FileField(upload_to = 'audio/',blank = True,validators = [audio_size])
     created = models.DateTimeField(auto_now_add=True)
     status  = models.BooleanField(default=True)
     views = models.ManyToManyField('IPAddress',blank=True)
