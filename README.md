@@ -10,3 +10,5 @@
 >3. Limitations for normal user(like change username and etc)
 >4. get user ip 
 >5. follow and unfollow 
+>6. send image,video and audio
+>
